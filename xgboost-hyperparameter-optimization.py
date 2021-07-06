@@ -186,3 +186,11 @@ best_model = xgb.train(
     num_boost_round=num_boost_round,
     evals=[(dtest, "Test")]
 )
+
+mean_absolute_error(best_model.predict(dtest), y_test)
+best_model.save_model("my_model.model")
+
+loaded_model = xgb.Booster()
+loaded_model.load_model("my_model.model")
+# And use it for predictions.
+loaded_model.predict(dtest)
