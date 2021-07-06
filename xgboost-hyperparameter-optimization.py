@@ -166,3 +166,23 @@ for eta in [.3, .2, .1, .05, .01, .005]:
         best_params = eta
 print("Best params: {}, MAE: {}".format(best_params, min_mae))
 
+params['eta'] = .01
+
+#The final dictionary of parameters
+print(params)
+model = xgb.train(
+    params,
+    dtrain,
+    num_boost_round=num_boost_round,
+    evals=[(dtest, "Test")],
+    early_stopping_rounds=10
+)
+
+#Since we now the exact best num_boost_round, we don't need the early_stopping_round anymore
+num_boost_round = model.best_iteration + 1
+best_model = xgb.train(
+    params,
+    dtrain,
+    num_boost_round=num_boost_round,
+    evals=[(dtest, "Test")]
+)
